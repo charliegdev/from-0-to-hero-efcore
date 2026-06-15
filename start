@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Start (or create) the course SQL Server database.
+# Safe to run from inside a distrobox/toolbox container or directly on the host.
+set -euo pipefail
+
+CONTAINER_NAME="efcore-mssql"
+IMAGE="mcr.microsoft.com/mssql/server:2022-latest"
+SA_PASSWORD="MySaPassword123"
+
+# When running inside a container, reach the host's podman; otherwise use podman directly.
+if [ -f /run/.containerenv ] || [ -n "${CONTAINER_ID:-}" ]; then
+  PODMAN="distrobox-host-exec podman"
+else
+  PODMAN="podman"
+fi
+
+if $PODMAN container exists "$CONTAINER_NAME"; then
+  echo "Resuming existing '$CONTAINER_NAME'..."
+  $PODMAN start "$CONTAINER_NAME"
+else
+  echo "Creating '$CONTAINER_NAME'..."
+  $PODMAN run -d --name "$CONTAINER_NAME" --restart unless-stopped \
+    -e "ACCEPT_EULA=Y" \
+    -e "MSSQL_SA_PASSWORD=$SA_PASSWORD" \
+    -p 1433:1433 \
+    --security-opt label=disable \
+    "$IMAGE"
+fi
+
+echo "SQL Server is up on localhost:1433  (user=sa, password=$SA_PASSWORD)"

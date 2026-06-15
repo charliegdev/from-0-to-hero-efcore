@@ -1,0 +1,82 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+out/
+artifacts/
+publish/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.VC.db
+*.VC.VC.opendb
+
+# Rider / ReSharper
+.idea/
+*.sln.iml
+_ReSharper.Caches/
+*.DotSettings.user
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+*.opendb
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+
+# Visual Studio cache/options
+*.cache
+*.log
+*.vspscc
+*.vssscc
+
+# Test results
+TestResults/
+*.trx
+
+# Publish results
+*.Publish.xml
+
+# Local history
+.vshistory/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Database files
+*.db
+*.db-journal
+
+# Certificates and secrets
+*.pfx
+*.key
+*.publishsettings
+appsettings.*.local.json
+secrets.json
+
+# Backup and temp files
+*~
+*.tmp
+*.temp
+*.bak
+*.orig
+*.swp
+
+# Misc
+*.dotCover
+*.class
+
+# MSBuild generated files
+project.lock.json
+project.fragment.lock.json
+packages.lock.json
