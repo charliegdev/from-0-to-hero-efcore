@@ -26,6 +26,15 @@ public class MoviesController(MoviesContext context) : Controller
         return movie is null ? NotFound() : Ok(movie);
     }
 
+    [HttpGet("by-year/{year:int}")]
+    [ProducesResponseType(typeof(List<Movie>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllByYear([FromRoute] int year)
+    {
+        var filteredMovies = context.Movies.Where(m => m.ReleaseDate.Year == year);
+
+        return Ok(await filteredMovies.ToListAsync());
+    }
+
     [HttpPost]
     [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] Movie movie)
