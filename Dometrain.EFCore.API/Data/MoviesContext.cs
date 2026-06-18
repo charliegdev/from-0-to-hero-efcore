@@ -18,6 +18,7 @@ public class MoviesContext : DbContext
             TrustServerCertificate = True;
             """
         );
+        optionsBuilder.LogTo(Console.WriteLine);
         base.OnConfiguring(optionsBuilder);
     }
 }
