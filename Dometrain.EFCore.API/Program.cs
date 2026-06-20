@@ -17,8 +17,9 @@ var app = builder.Build();
 // ! A dirty hack to create the Movies table. Don't do this in production.
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<MoviesContext>();
-context.Database.EnsureDeleted();
-context.Database.EnsureCreated();
+
+// context.Database.EnsureDeleted();
+// context.Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
