@@ -17,7 +17,10 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .HasMaxLength(128)
             .IsRequired();
 
-        builder.Property(movie => movie.ReleaseDate).HasColumnType("date");
+        builder
+            .Property(movie => movie.ReleaseDate)
+            .HasColumnType("char(8)")
+            .HasConversion(new DateTimeToChar8Converter());
 
         builder
             .Property(movie => movie.Synopsis)
@@ -38,6 +41,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 ReleaseDate = new DateTime(1999, 9, 10),
                 Synopsis = "Ed Norton and Brad Pitt have a couple of fist fights with each other.",
                 MainGenreId = 2,
+                AgeRating = AgeRating.Adolescent,
             },
             new Movie
             {
@@ -47,6 +51,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "Keanu Reeves chooses the red pill, learns kung fu from a screensaver, and dodges bullets because he forgot gravity exists.",
                 MainGenreId = 5,
+                AgeRating = AgeRating.Adolescent,
             },
             new Movie
             {
@@ -56,6 +61,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "Jack and Rose fall in love on a boat that was definitely not built by the lowest bidder. Spoiler: the iceberg wins.",
                 MainGenreId = 6,
+                AgeRating = AgeRating.HighSchool,
             },
             new Movie
             {
@@ -65,6 +71,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "A billionaire opens a zoo with no fences, no backup power plan, and a lawyer who walks too slowly. Dinosaurs file a complaint.",
                 MainGenreId = 4,
+                AgeRating = AgeRating.HighSchool,
             },
             new Movie
             {
@@ -74,6 +81,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "An ogre just wants privacy. A donkey won't stop talking. The princess is also an ogre and somehow that's the plot twist.",
                 MainGenreId = 8,
+                AgeRating = AgeRating.ElementarySchool,
             },
             new Movie
             {
@@ -83,6 +91,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "A man attends his daughter's wedding and spends the rest of the film making offers people can't refuse, including to a horse.",
                 MainGenreId = 3,
+                AgeRating = AgeRating.Adult,
             },
             new Movie
             {
@@ -92,6 +101,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "Leonardo DiCaprio naps on the job so hard he dreams inside a dream inside a dream and still can't spin a top properly.",
                 MainGenreId = 7,
+                AgeRating = AgeRating.Adolescent,
             },
             new Movie
             {
@@ -101,6 +111,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "A shark eats tourists while the mayor insists the beach is safe because bad Yelp reviews hurt the local economy.",
                 MainGenreId = 4,
+                AgeRating = AgeRating.HighSchool,
             },
             new Movie
             {
@@ -110,6 +121,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "A princess with ice powers runs away and builds a castle because her sister kept borrowing her stuff without asking.",
                 MainGenreId = 8,
+                AgeRating = AgeRating.ElementarySchool,
             },
             new Movie
             {
@@ -119,6 +131,7 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 Synopsis =
                     "A farm boy whines about sand, trusts a wizard, and blows up a planet-sized weapon because he got lucky with a torpedo.",
                 MainGenreId = 5,
+                AgeRating = AgeRating.ElementarySchool,
             }
         );
     }
