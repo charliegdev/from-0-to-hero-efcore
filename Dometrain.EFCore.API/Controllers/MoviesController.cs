@@ -7,51 +7,66 @@ namespace Dometrain.EFCore.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GenresController(MoviesContext context) : Controller
+public class MoviesController(MoviesContext context) : Controller
 {
     [HttpGet]
-    [ProducesResponseType(typeof(List<Genre>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<Movie>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await context.Genres.ToListAsync());
+        return Ok(await context.Movies.ToListAsync());
     }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(Genre), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        var movie = await context.Genres.FindAsync(id);
-
+        var movie = await context
+            .Movies.Include(movie => movie.Genre)
+            .SingleOrDefaultAsync(m => m.Identifier == id);
         return movie is null ? NotFound() : Ok(movie);
     }
 
-    [HttpPost]
-    [ProducesResponseType(typeof(Genre), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create([FromBody] Genre genre)
+    [HttpGet("by-year/{year:int}")]
+    [ProducesResponseType(typeof(List<MovieTitle>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllByYear([FromRoute] int year)
     {
-        await context.Genres.AddAsync(genre);
+        var filteredTitles = await context
+            .Movies.Where(m => m.ReleaseDate.Year == year)
+            .Select(m => new MovieTitle { Id = m.Identifier, Title = m.Title })
+            .ToListAsync();
+
+        return Ok(filteredTitles);
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(Movie), StatusCodes.Status201Created)]
+    public async Task<IActionResult> Create([FromBody] Movie movie)
+    {
+        await context.Movies.AddAsync(movie);
         await context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = genre.Id }, genre);
+        return CreatedAtAction(nameof(Get), new { id = movie.Identifier }, movie);
     }
 
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(Genre), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Movie), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Genre genre)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Movie movie)
     {
-        var existingGenre = await context.Genres.FindAsync(id);
+        var existingMovie = await context.Movies.FindAsync(id);
 
-        if (existingGenre is null)
+        if (existingMovie is null)
         {
             return NotFound();
         }
 
-        existingGenre.Name = genre.Name;
+        existingMovie.Title = movie.Title;
+        existingMovie.ReleaseDate = movie.ReleaseDate;
+        existingMovie.Synopsis = movie.Synopsis;
 
         await context.SaveChangesAsync();
 
-        return Ok(existingGenre);
+        return Ok(existingMovie);
     }
 
     [HttpDelete("{id:int}")]
@@ -59,12 +74,12 @@ public class GenresController(MoviesContext context) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Remove([FromRoute] int id)
     {
-        var existingGenre = await context.Genres.FindAsync(id);
+        var existingMovie = await context.Movies.FindAsync(id);
 
-        if (existingGenre is null)
+        if (existingMovie is null)
             return NotFound();
 
-        context.Genres.Remove(existingGenre);
+        context.Movies.Remove(existingMovie);
         await context.SaveChangesAsync();
         return Ok();
     }
