@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.JavaScript;
 using Dometrain.EFCore.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -32,6 +31,10 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .WithMany(genre => genre.Movies)
             .HasPrincipalKey(genre => genre.Id)
             .HasForeignKey(movie => movie.MainGenreId);
+
+        builder.OwnsOne(movie => movie.Director).ToTable("Movie_Directors");
+
+        builder.OwnsMany(movie => movie.Actors).ToTable("Movie_Actors");
 
         builder.HasData(
             new Movie
@@ -134,5 +137,215 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
                 AgeRating = AgeRating.ElementarySchool,
             }
         );
+
+        builder
+            .OwnsOne(movie => movie.Director)
+            .HasData(
+                new
+                {
+                    MovieIdentifier = 1,
+                    FirstName = "David",
+                    LastName = "Fincher",
+                },
+                new
+                {
+                    MovieIdentifier = 2,
+                    FirstName = "Lana",
+                    LastName = "Wachowski",
+                },
+                new
+                {
+                    MovieIdentifier = 3,
+                    FirstName = "James",
+                    LastName = "Cameron",
+                },
+                new
+                {
+                    MovieIdentifier = 4,
+                    FirstName = "Steven",
+                    LastName = "Spielberg",
+                },
+                new
+                {
+                    MovieIdentifier = 5,
+                    FirstName = "Andrew",
+                    LastName = "Adamson",
+                },
+                new
+                {
+                    MovieIdentifier = 6,
+                    FirstName = "Francis Ford",
+                    LastName = "Coppola",
+                },
+                new
+                {
+                    MovieIdentifier = 7,
+                    FirstName = "Christopher",
+                    LastName = "Nolan",
+                },
+                new
+                {
+                    MovieIdentifier = 8,
+                    FirstName = "Steven",
+                    LastName = "Spielberg",
+                },
+                new
+                {
+                    MovieIdentifier = 9,
+                    FirstName = "Chris",
+                    LastName = "Buck",
+                },
+                new
+                {
+                    MovieIdentifier = 10,
+                    FirstName = "George",
+                    LastName = "Lucas",
+                }
+            );
+
+        builder
+            .OwnsMany(movie => movie.Actors)
+            .HasData(
+                new
+                {
+                    MovieIdentifier = 1,
+                    Id = 1,
+                    FirstName = "Edward",
+                    LastName = "Norton",
+                },
+                new
+                {
+                    MovieIdentifier = 1,
+                    Id = 2,
+                    FirstName = "Brad",
+                    LastName = "Pitt",
+                },
+                new
+                {
+                    MovieIdentifier = 2,
+                    Id = 1,
+                    FirstName = "Keanu",
+                    LastName = "Reeves",
+                },
+                new
+                {
+                    MovieIdentifier = 2,
+                    Id = 2,
+                    FirstName = "Carrie-Anne",
+                    LastName = "Moss",
+                },
+                new
+                {
+                    MovieIdentifier = 3,
+                    Id = 1,
+                    FirstName = "Leonardo",
+                    LastName = "DiCaprio",
+                },
+                new
+                {
+                    MovieIdentifier = 3,
+                    Id = 2,
+                    FirstName = "Kate",
+                    LastName = "Winslet",
+                },
+                new
+                {
+                    MovieIdentifier = 4,
+                    Id = 1,
+                    FirstName = "Sam",
+                    LastName = "Neill",
+                },
+                new
+                {
+                    MovieIdentifier = 4,
+                    Id = 2,
+                    FirstName = "Laura",
+                    LastName = "Dern",
+                },
+                new
+                {
+                    MovieIdentifier = 5,
+                    Id = 1,
+                    FirstName = "Mike",
+                    LastName = "Myers",
+                },
+                new
+                {
+                    MovieIdentifier = 5,
+                    Id = 2,
+                    FirstName = "Eddie",
+                    LastName = "Murphy",
+                },
+                new
+                {
+                    MovieIdentifier = 6,
+                    Id = 1,
+                    FirstName = "Marlon",
+                    LastName = "Brando",
+                },
+                new
+                {
+                    MovieIdentifier = 6,
+                    Id = 2,
+                    FirstName = "Al",
+                    LastName = "Pacino",
+                },
+                new
+                {
+                    MovieIdentifier = 7,
+                    Id = 1,
+                    FirstName = "Leonardo",
+                    LastName = "DiCaprio",
+                },
+                new
+                {
+                    MovieIdentifier = 7,
+                    Id = 2,
+                    FirstName = "Marion",
+                    LastName = "Cotillard",
+                },
+                new
+                {
+                    MovieIdentifier = 8,
+                    Id = 1,
+                    FirstName = "Roy",
+                    LastName = "Scheider",
+                },
+                new
+                {
+                    MovieIdentifier = 8,
+                    Id = 2,
+                    FirstName = "Robert",
+                    LastName = "Shaw",
+                },
+                new
+                {
+                    MovieIdentifier = 9,
+                    Id = 1,
+                    FirstName = "Kristen",
+                    LastName = "Bell",
+                },
+                new
+                {
+                    MovieIdentifier = 9,
+                    Id = 2,
+                    FirstName = "Idina",
+                    LastName = "Menzel",
+                },
+                new
+                {
+                    MovieIdentifier = 10,
+                    Id = 1,
+                    FirstName = "Mark",
+                    LastName = "Hamill",
+                },
+                new
+                {
+                    MovieIdentifier = 10,
+                    Id = 2,
+                    FirstName = "Harrison",
+                    LastName = "Ford",
+                }
+            );
     }
 }
