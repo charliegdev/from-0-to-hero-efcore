@@ -8,8 +8,5 @@ public class Genre
     public required string Name { get; set; }
 
     [JsonIgnore]
-    public DateTime CreatedDate { get; set; }
-
-    [JsonIgnore]
     public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();
 }

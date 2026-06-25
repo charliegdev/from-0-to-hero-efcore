@@ -21,9 +21,9 @@ public class GenresController(MoviesContext context) : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get([FromRoute] int id)
     {
-        var movie = await context.Genres.FindAsync(id);
+        var genre = await context.Genres.FindAsync(id);
 
-        return movie is null ? NotFound() : Ok(movie);
+        return genre is null ? NotFound() : Ok(genre);
     }
 
     [HttpPost]
